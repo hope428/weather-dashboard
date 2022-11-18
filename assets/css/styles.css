@@ -1,0 +1,43 @@
+.sun::after {
+  content: "\2600";
+}
+
+
+.header {
+    background-color: #223549;
+    width: 100%;
+    color: white;
+    text-shadow: 1px 1px 2px rgb(134, 132, 150);
+    height: 15vh;
+}
+
+.custom-btn {
+  background: linear-gradient(
+    90deg,
+    rgba(107, 113, 154, 1) 2%,
+    rgba(163, 150, 246, 1) 58%,
+    rgba(155, 187, 235, 1) 100%
+  );
+  border: none;
+  color: white;
+}
+
+.custom-btn:hover {
+    font-style: italic;
+}
+
+label {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.today {
+    border: 1px solid black;
+}
+
+.weather-card {
+    background: rgb(44, 44, 94);
+    color: white;
+    font-weight: bold;
+    margin: .2rem;
+}
