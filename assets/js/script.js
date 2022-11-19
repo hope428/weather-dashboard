@@ -24,6 +24,29 @@ function getCities() {
   }
 }
 
+function createCurrentWeatherCard(weather) {
+    
+}
+
+function getCurrentWeather(currentCity) {
+    var weather = {
+        name: currentCity.name,
+        temp: '',
+        windSpeed: '',
+        humidity: ''
+    }
+  fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${currentCity.lat}&lon=${currentCity.lon}&appid=${apiKey}`
+  ).then(function(response){
+    return response.json()
+  }).then(function(data){
+        weather.temp = data.main.temp;
+        weather.windSpeed = data.wind.speed
+        weather.humidity = data.main.humidity
+        createCurrentWeatherCard(weather)
+  })
+}
+
 //creates api call when city is clicked from list
 function callCity(event) {
   var element = event.target;
@@ -45,6 +68,7 @@ function callCity(event) {
         currentCity.lat = data[0].lat;
         currentCity.lon = data[0].lon;
         currentCity.name = data[0].name;
+        getCurrentWeather(currentCity);
       });
   }
 }
