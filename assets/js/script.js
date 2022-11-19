@@ -4,6 +4,7 @@ var cities = JSON.parse(localStorage.getItem("searchedCities")) ?? [];
 var searchedCitiesEl = document.querySelector(".searched-cities");
 var apiKey = "b90362aa8df79bdd8a26c1d031b51056";
 var currentWeatherCard = document.getElementById("today");
+var forecastSection = document.getElementById("forecast")
 var currentDay = dayjs();
 
 //enter city to search
@@ -39,31 +40,44 @@ function createCurrentWeatherCard(weather) {
     `;
 }
 
-
-function createForecastCards(forecast){
-
+function createForecastCards(forecast) {
+    forecastSection.innerHTML = `<h2>5 Day Forecast</h2>`
+    for(let i = 0; i < forecast.length; i++){
+        var card = document.createElement('div')
+        card.classList.add("weather-card", "py-1", 'px-2', 'col-12', 'col-lg', 'rounded')
+        card.innerHTML = `<p>${dayjs(forecast[i].date).format('M/D/YYYY')}</p>
+            <img src="http://openweathermap.org/img/wn/${forecast[i].imgSrc}.png"/>
+            <p>Temp: ${forecast[i].temp} °F</p>
+            <p>Wind: ${forecast[i].wind} MPH</p>
+            <p>Humidity: ${forecast[i].humidity}%</p>
+        `
+        forecastSection.appendChild(card)
+    } 
 }
 
 //creates array of 5 day forecast data
 function getForecast(currentCity) {
   var fiveDayForecast = [];
   fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${currentCity.lat}&lon=${currentCity.lon}&appid=${apiKey}`
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${currentCity.lat}&lon=${currentCity.lon}&appid=${apiKey}&units=imperial`
   )
     .then(function (response) {
       return response.json();
     })
     .then(function (data) {
-      for (let i = 0; i < 40; i += 8) {
+      //saves every 8 interval to four loop
+      for (let i = 8; i <= 40; i += 6) {
+        console.log(i)
         fiveDayForecast.push({
-          date: data.list[i].dt_txt,
+          date: data.list[i].dt_txt.slice(0, 10),
           temp: data.list[i].main.temp,
           wind: data.list[i].wind.speed,
           humidity: data.list[i].main.humidity,
+          imgSrc: data.list[i].weather[0].icon
         });
       }
       //call to create element on page
-      createForecastCards(fiveDayForecast)
+      createForecastCards(fiveDayForecast);
     });
 }
 
