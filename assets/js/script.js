@@ -4,6 +4,7 @@ var cities = JSON.parse(localStorage.getItem("searchedCities")) ?? [];
 var searchedCitiesEl = document.querySelector(".searched-cities");
 var apiKey = "b90362aa8df79bdd8a26c1d031b51056";
 var currentWeatherCard = document.getElementById("today");
+var currentDay = dayjs()
 
 //enter city to search
 function search(event) {
@@ -26,8 +27,7 @@ function getCities() {
 }
 
 function createCurrentWeatherCard(weather) {
-
-    currentWeatherCard.innerHTML = `<h2>${weather.name} <img src=""/></h2>
+    currentWeatherCard.innerHTML = `<h2>${weather.name} ${currentDay.format('(M/D/YYYY)')}<img src=""/></h2>
         <p>Temp: ${weather.temp} °F</p>
         <p>Wind: ${weather.windSpeed} MPH</p>
         <p>Humidity: ${weather.humidity}%</p>
@@ -57,17 +57,20 @@ function getCurrentWeather(currentCity) {
     });
 }
 
+function callPreviousCity(event){
+    var element = event.target
+    if (element.matches("button")){
+        callCity(event.target.textContent)
+    }
+}
+
 //creates api call when city is clicked from list
-function callCity(event) {
-  var element = event.target;
-  var query;
+function callCity(query) {
   var currentCity = {
     lat: "",
     lon: "",
     name: "",
   };
-  if (element.matches("button")) {
-    query = element.textContent;
     fetch(
       `http://api.openweathermap.org/geo/1.0/direct?q=${query}&appid=${apiKey}`
     )
@@ -80,9 +83,8 @@ function callCity(event) {
         currentCity.name = data[0].name;
         getCurrentWeather(currentCity);
       });
-  }
 }
 
 getCities();
-searchedCitiesEl.addEventListener("click", callCity);
+searchedCitiesEl.addEventListener("click", callPreviousCity);
 submitForm.addEventListener("click", search);
