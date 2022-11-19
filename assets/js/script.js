@@ -122,7 +122,7 @@ function callCity(query) {
     name: "",
   };
   fetch(
-    `http://api.openweathermap.org/geo/1.0/direct?q=${query}&appid=${apiKey}`
+    `https://api.openweathermap.org/geo/1.0/direct?q=${query}&appid=${apiKey}`
   )
     .then(function (response) {
       return response.json();
