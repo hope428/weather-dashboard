@@ -3,6 +3,7 @@ var submitForm = document.getElementById("submit");
 var cities = JSON.parse(localStorage.getItem("searchedCities")) ?? [];
 var searchedCitiesEl = document.querySelector(".searched-cities");
 var apiKey = "b90362aa8df79bdd8a26c1d031b51056";
+var currentWeatherCard = document.getElementById("today");
 
 //enter city to search
 function search(event) {
@@ -25,26 +26,35 @@ function getCities() {
 }
 
 function createCurrentWeatherCard(weather) {
-    
+
+    currentWeatherCard.innerHTML = `<h2>${weather.name} <img src=""/></h2>
+        <p>Temp: ${weather.temp} °F</p>
+        <p>Wind: ${weather.windSpeed} MPH</p>
+        <p>Humidity: ${weather.humidity}%</p>
+    `;
 }
 
+//gets weather of lat and lon passed in
 function getCurrentWeather(currentCity) {
-    var weather = {
-        name: currentCity.name,
-        temp: '',
-        windSpeed: '',
-        humidity: ''
-    }
+  var weather = {
+    name: currentCity.name,
+    temp: "",
+    windSpeed: "",
+    humidity: "",
+  };
   fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${currentCity.lat}&lon=${currentCity.lon}&appid=${apiKey}`
-  ).then(function(response){
-    return response.json()
-  }).then(function(data){
-        weather.temp = data.main.temp;
-        weather.windSpeed = data.wind.speed
-        weather.humidity = data.main.humidity
-        createCurrentWeatherCard(weather)
-  })
+    `https://api.openweathermap.org/data/2.5/weather?lat=${currentCity.lat}&lon=${currentCity.lon}&appid=${apiKey}&units=imperial`
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      console.log(data);
+      weather.temp = data.main.temp;
+      weather.windSpeed = data.wind.speed;
+      weather.humidity = data.main.humidity;
+      createCurrentWeatherCard(weather);
+    });
 }
 
 //creates api call when city is clicked from list
