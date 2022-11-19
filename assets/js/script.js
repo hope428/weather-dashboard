@@ -39,8 +39,32 @@ function createCurrentWeatherCard(weather) {
     `;
 }
 
-function createForecastCards(){
-    
+
+function createForecastCards(forecast){
+
+}
+
+//creates array of 5 day forecast data
+function getForecast(currentCity) {
+  var fiveDayForecast = [];
+  fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?lat=${currentCity.lat}&lon=${currentCity.lon}&appid=${apiKey}`
+  )
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (data) {
+      for (let i = 0; i < 40; i += 8) {
+        fiveDayForecast.push({
+          date: data.list[i].dt_txt,
+          temp: data.list[i].main.temp,
+          wind: data.list[i].wind.speed,
+          humidity: data.list[i].main.humidity,
+        });
+      }
+      //call to create element on page
+      createForecastCards(fiveDayForecast)
+    });
 }
 
 //gets weather of lat and lon passed in
@@ -50,7 +74,7 @@ function getCurrentWeather(currentCity) {
     temp: "",
     windSpeed: "",
     humidity: "",
-    imgIcon: ''
+    imgIcon: "",
   };
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?lat=${currentCity.lat}&lon=${currentCity.lon}&appid=${apiKey}&units=imperial`
@@ -62,9 +86,8 @@ function getCurrentWeather(currentCity) {
       weather.temp = data.main.temp;
       weather.windSpeed = data.wind.speed;
       weather.humidity = data.main.humidity;
-      weather.imgIcon = data.weather[0].icon
+      weather.imgIcon = data.weather[0].icon;
       createCurrentWeatherCard(weather);
-      createForecastCards(weather)
     });
 }
 
@@ -79,7 +102,6 @@ function callPreviousCity(event) {
 
 //creates api call when city is clicked from list
 function callCity(query) {
-  console.log(query);
   var currentCity = {
     lat: "",
     lon: "",
@@ -96,6 +118,7 @@ function callCity(query) {
       currentCity.lon = data[0].lon;
       currentCity.name = data[0].name;
       getCurrentWeather(currentCity);
+      getForecast(currentCity);
     });
 }
 
