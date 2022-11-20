@@ -9,8 +9,8 @@ searched cities can be clicked any time to view the current weather and the 5 da
 The localstorage can also be cleared by clicking the clear button.
 
 ## Usage
-[Deployed Link]() <br/>
-[Github Repo]()
+[Deployed Link](https://hope428.github.io/weather-dashboard/) <br/>
+[Github Repo](https://github.com/hope428/weather-dashboard)
 
 ![screenshot of website](./assets/images/screenshot.png)
 
