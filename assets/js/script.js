@@ -1,8 +1,6 @@
 var searchInput = document.getElementById("city-input");
 var submitForm = document.getElementById("submit");
-var cities = JSON.parse(localStorage.getItem("searchedCities")) ?? [
-  "Pittsburgh",
-];
+var cities = JSON.parse(localStorage.getItem("searchedCities")) ?? [];
 var searchedCitiesEl = document.querySelector(".searched-cities");
 var apiKey = "b90362aa8df79bdd8a26c1d031b51056";
 var currentWeatherCard = document.getElementById("today");
@@ -148,9 +146,11 @@ function callCity(query) {
 
 getCities();
 //Creates default in case there is nothing in local storage
-if (!cities) {
+if (cities.length === 0) {
   callCity("Pittsburgh");
-} else callCity(cities[0]);
+} else {
+  callCity(cities[0]);
+}
 searchedCitiesEl.addEventListener("click", callPreviousCity);
 submitForm.addEventListener("click", search);
 document.getElementById("clear").addEventListener("click", function () {
