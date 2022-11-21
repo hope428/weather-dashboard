@@ -152,7 +152,8 @@ function callCity(query) {
       } else {
         currentWeatherCard.textContent = "No city found"
         forecastSection.textContent = ""
-        cities.pop()
+        cities.splice(cities.length-1, 1)
+        localStorage.setItem('searchedCities', JSON.stringify(cities))
         getCities()
       }
     });
