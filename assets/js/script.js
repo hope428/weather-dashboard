@@ -11,6 +11,12 @@ var currentDay = dayjs();
 function search(event) {
   event.preventDefault();
   if (searchInput.value) {
+    for(let i = 0; i < cities.length; i++){
+      if(searchInput.value === cities[i]){
+        callCity(searchInput.value)
+        return;
+      }
+    }
     cities.push(searchInput.value);
     localStorage.setItem("searchedCities", JSON.stringify(cities));
     getCities();
