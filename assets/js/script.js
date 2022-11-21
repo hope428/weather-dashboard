@@ -14,6 +14,7 @@ function search(event) {
     for(let i = 0; i < cities.length; i++){
       if(searchInput.value === cities[i]){
         callCity(searchInput.value)
+        searchInput.value = ""
         return;
       }
     }
