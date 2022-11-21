@@ -77,8 +77,7 @@ function getForecast(currentCity) {
     })
     .then(function (data) {
       //saves every 8 interval to four loop
-      for (let i = 0; i < 40; i += 8) {
-        console.log(i);
+      for (let i = 7; i <= 40; i += 8) {
         fiveDayForecast.push({
           date: data.list[i].dt_txt.slice(0, 10),
           temp: data.list[i].main.temp,
