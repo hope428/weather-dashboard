@@ -11,10 +11,10 @@ var currentDay = dayjs();
 function search(event) {
   event.preventDefault();
   if (searchInput.value) {
-    for(let i = 0; i < cities.length; i++){
-      if(searchInput.value === cities[i]){
-        callCity(searchInput.value)
-        searchInput.value = ""
+    for (let i = 0; i < cities.length; i++) {
+      if (searchInput.value === cities[i]) {
+        callCity(searchInput.value);
+        searchInput.value = "";
         return;
       }
     }
@@ -143,11 +143,18 @@ function callCity(query) {
       return response.json();
     })
     .then(function (data) {
-      currentCity.lat = data[0].lat;
-      currentCity.lon = data[0].lon;
-      currentCity.name = data[0].name;
-      getCurrentWeather(currentCity);
-      getForecast(currentCity);
+      if (data.length) {
+        currentCity.lat = data[0].lat;
+        currentCity.lon = data[0].lon;
+        currentCity.name = data[0].name;
+        getCurrentWeather(currentCity);
+        getForecast(currentCity);
+      } else {
+        currentWeatherCard.textContent = "No city found"
+        forecastSection.textContent = ""
+        cities.pop()
+        getCities()
+      }
     });
 }
 
